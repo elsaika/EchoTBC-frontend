@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EchoTBC - Pemrosesan</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#4a9ee5",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#004a78",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary-fixed": "#dae2fd",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-primary": "#99cbff",
+                        "background": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dae2fd",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface-variant": "#404750",
+                        "secondary": "#565e74",
+                        "tertiary-fixed": "#71f8e4",
+                        "on-background": "#0b1c30",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-fixed": "#131b2e",
+                        "tertiary": "#006b5f",
+                        "on-tertiary-container": "#003731",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#00629d",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#00201c",
+                        "outline": "#707882",
+                        "primary": "#00629d",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "primary-fixed-dim": "#99cbff",
+                        "on-primary-container": "#003355",
+                        "on-primary-fixed": "#001d33",
+                        "tertiary-container": "#00ab9a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "xl": "40px",
+                        "gutter": "24px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Manrope"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 98, 157, 0.1);
+            box-shadow: 0 8px 32px -4px rgba(0, 98, 157, 0.08), 0 4px 12px -2px rgba(0, 98, 157, 0.04);
+        }
+        
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.98); }
+        }
+        .animate-subtle-pulse {
+            animation: subtle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 3s linear infinite;
+        }
+        
+        .ambient-bg {
+            background: linear-gradient(to bottom, #eff4ff 0%, #f8f9ff 100%);
+        }
+
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #e5eeff 0%, #eff4ff 100%);
+        }
+
+        @keyframes shimmer {
+            100% {
+                transform: translateX(100%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-md antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+
+<div id="tb-stepper" data-step="4"></div>
+<script src="stepper.js"></script>
+
+<div class="flex-1 flex flex-col relative w-full lg:ml-64 ambient-bg min-h-screen">
+    <header class="fixed top-0 w-full z-50 bg-surface-container-low/80 backdrop-blur-xl shadow-sm border-b border-primary/10 transition-all duration-300 lg:hidden">
+        <div class="flex justify-center items-center px-gutter py-4 max-w-screen-md mx-auto">
+            <div class="font-display-lg text-headline-lg md:text-display-lg text-primary flex items-center gap-2 tracking-tight">
+                <span class="material-symbols-outlined text-primary" style="font-size: 32px;">health_and_safety</span>
+                EchoTBC
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 mt-20 lg:mt-0 mb-8 flex flex-col items-center w-full mx-auto relative z-10">
+        <div class="w-full bg-[#006b5f] text-white py-3 px-4 text-center font-label-md text-label-md shadow-sm sticky top-0 z-30">
+            Peringatan: Ini bukan diagnosis medis. Hasil skrining memerlukan konfirmasi dokter.
+        </div>
+        <div class="w-full max-w-screen-sm mx-auto px-4 md:px-8 flex flex-col items-center justify-center flex-1 mt-8">
+        <div class="w-full flex items-center justify-between mb-8 gap-2">
+            <div class="h-2 flex-1 rounded-full bg-primary overflow-hidden shadow-sm"></div>
+            <div class="h-2 flex-1 rounded-full bg-primary overflow-hidden shadow-sm"></div>
+            <div class="h-2 flex-1 rounded-full bg-primary overflow-hidden shadow-sm"></div>
+            <div class="h-2 flex-1 bg-primary-container rounded-full relative overflow-hidden shadow-sm">
+                <div id="step-bar" class="h-full bg-primary w-0 transition-all duration-300"></div>
+            </div>
+            <div class="h-2 flex-1 rounded-full bg-surface-container-highest overflow-hidden"></div>
+        </div>
+        <p class="font-label-sm text-label-sm text-primary mb-8 uppercase tracking-widest w-full text-center font-bold">Langkah 4 dari 5</p>
+        
+        <div class="glass-card w-full rounded-xl p-8 md:p-12 flex flex-col items-center relative overflow-hidden border border-primary/20">
+            <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-primary-container/30 rounded-full blur-3xl"></div>
+            
+            <div class="relative w-32 h-32 mb-8 flex items-center justify-center">
+                <svg class="absolute inset-0 w-full h-full text-primary/20 animate-spin-slow" fill="none" viewbox="0 0 100 100">
+                    <circle cx="50" cy="50" r="48" stroke="currentColor" stroke-dasharray="10 4" stroke-width="2"></circle>
+                </svg>
+                <svg class="absolute inset-0 w-full h-full text-primary animate-spin" fill="none" style="animation-duration: 2s;" viewbox="0 0 100 100">
+                    <path d="M50 2 A48 48 0 0 1 98 50" stroke="currentColor" stroke-linecap="round" stroke-width="4"></path>
+                </svg>
+                <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-lg border border-primary/10 z-10 relative">
+                    <span class="material-symbols-outlined text-primary fill-icon text-3xl animate-pulse">model_training</span>
+                </div>
+            </div>
+            
+            <h2 id="main-title" class="font-headline-md text-headline-lg-mobile md:text-headline-md text-on-surface mb-2 text-center tracking-tight font-bold">Menyiapkan analisis...</h2>
+            <p class="font-body-md text-body-md text-on-surface-variant text-center mb-8 max-w-[280px]">Algoritma kami sedang memproses data klinis dan rekaman suara Anda.</p>
+            
+            <div class="w-full mb-6">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Progres Keseluruhan</span>
+                    <span id="progress-percentage" class="font-label-md text-label-md text-primary font-bold">0%</span>
+                </div>
+                <div class="h-3 w-full bg-primary-container/20 rounded-full overflow-hidden shadow-inner border border-primary/5">
+                    <div id="progress-fill" class="h-full bg-gradient-to-r from-primary-container to-primary w-0 rounded-full relative transition-all duration-300 ease-out shadow-sm">
+                        <div class="absolute top-0 left-0 bottom-0 w-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="w-full bg-primary-container/5 rounded-lg p-4 border border-primary/10">
+                <ul class="space-y-4">
+                    <li id="status-audio" class="flex items-start gap-3">
+                        <span class="status-icon material-symbols-outlined text-primary animate-spin mt-0.5">autorenew</span>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface font-semibold">Memproses audio...</p>
+                            <p class="status-sub font-label-sm text-label-sm text-on-surface-variant mt-0.5">Sedang memvalidasi rekaman</p>
+                        </div>
+                    </li>
+                    <li id="status-feature" class="flex items-start gap-3 opacity-40">
+                        <span class="status-icon material-symbols-outlined text-outline mt-0.5">circle</span>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface font-semibold">Mengekstrak fitur...</p>
+                            <p class="status-sub font-label-sm text-label-sm text-on-surface-variant mt-0.5">Menunggu antrean</p>
+                        </div>
+                    </li>
+                    <li id="status-analysis" class="flex items-start gap-3 opacity-40">
+                        <span class="status-icon material-symbols-outlined text-outline mt-0.5">circle</span>
+                        <div class="flex-1">
+                            <p class="font-label-md text-label-md text-on-surface font-semibold">Menjalankan analisis...</p>
+                            <p class="status-sub font-label-sm text-label-sm text-on-surface-variant mt-0.5">Menunggu antrean</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="mt-8 w-full bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3 shadow-md backdrop-blur-sm">
+            <span class="material-symbols-outlined text-amber-600 fill-icon mt-0.5 flex-shrink-0">info</span>
+            <div>
+                <p class="font-label-md text-label-md text-amber-800 font-bold mb-1">Informasi Penting</p>
+                <p class="font-body-md text-body-md text-amber-900 text-sm leading-relaxed">
+                    Hasil ini perlu dikonfirmasi di fasilitas kesehatan. Ini bukan diagnosis medis yang definitif.
+                </p>
+            </div>
+        </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const progressFill = document.getElementById("progress-fill");
+        const progressText = document.getElementById("progress-percentage");
+        const stepBar = document.getElementById("step-bar");
+        const mainTitle = document.getElementById("main-title");
+
+        const statusAudio = document.getElementById("status-audio");
+        const statusFeature = document.getElementById("status-feature");
+        const statusAnalysis = document.getElementById("status-analysis");
+
+        let progress = 0;
+
+        const interval = setInterval(() => {
+            progress += 4; // Menaikkan progres konstan berjangka waktu
+            if (progress > 100) progress = 100;
+
+            // Perbarui elemen visual bar & teks persentase
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${progress}%`;
+            stepBar.style.width = `${progress}%`;
+
+            // Alur Perubahan Fase Item Checklist
+            if (progress >= 35 && progress < 70) {
+                // Langkah 1 Berhasil -> Langkah 2 Aktif
+                setStepComplete(statusAudio, "Rekaman divalidasi");
+                setStepActive(statusFeature, "Mengisolasi pola pernapasan...");
+                mainTitle.textContent = "Mengekstrak fitur batuk...";
+            } 
+            else if (progress >= 70 && progress < 100) {
+                // Langkah 2 Berhasil -> Langkah 3 Aktif
+                setStepComplete(statusFeature, "Pola pernapasan diisolasi");
+                setStepActive(statusAnalysis, "Sedang mengevaluasi risiko medis...");
+                mainTitle.textContent = "Menjalankan analisis AI...";
+            } 
+            else if (progress >= 100) {
+                // Semua Tahapan Checklist Beres
+                clearInterval(interval);
+                setStepComplete(statusAnalysis, "Analisis risiko selesai");
+                mainTitle.textContent = "Analisis Berhasil!";
+                animasiSelesai = true;
+                cobaPindahKeHasil();
+            }
+        }, 150); // Total durasi loading berjalan sekitar 3.5 - 4 detik
+
+        // ================= PANGGILAN BACKEND NYATA =================
+        const BACKEND_URL = "http://localhost:8000/api/v1/screening";
+        let animasiSelesai = false;
+        let hasilPrediksi = null;
+        let adaError = null;
+
+        // Ubah string base64 (data URL) menjadi Blob audio
+        function base64KeBlob(dataURL) {
+            const [meta, b64] = dataURL.split(",");
+            const mime = meta.match(/:(.*?);/)[1];
+            const biner = atob(b64);
+            const arr = new Uint8Array(biner.length);
+            for (let i = 0; i < biner.length; i++) arr[i] = biner.charCodeAt(i);
+            return new Blob([arr], { type: mime });
+        }
+
+        async function panggilBackend() {
+            try {
+                const dataKlinis = JSON.parse(localStorage.getItem("tb_data_klinis"));
+                const audioB64 = localStorage.getItem("tb_audio_base64");
+                if (!dataKlinis || !audioB64) {
+                    throw new Error("Data klinis atau audio tidak ditemukan. Ulangi dari awal.");
+                }
+
+                const audioBlob = base64KeBlob(audioB64);
+                const form = new FormData();
+                // data klinis
+                form.append("age", dataKlinis.age);
+                form.append("BMI", dataKlinis.BMI);
+                form.append("reported_cough_dur", dataKlinis.reported_cough_dur);
+                form.append("sex", dataKlinis.sex);
+                form.append("weight_loss", dataKlinis.weight_loss);
+                form.append("smoke_lweek", dataKlinis.smoke_lweek);
+                form.append("fever", dataKlinis.fever);
+                form.append("night_sweats", dataKlinis.night_sweats);
+                // backend minta 3 audio -> kirim rekaman yang sama 3x
+                form.append("audio_1", audioBlob, "batuk.webm");
+                form.append("audio_2", audioBlob, "batuk.webm");
+                form.append("audio_3", audioBlob, "batuk.webm");
+
+                const resp = await fetch(BACKEND_URL, { method: "POST", body: form });
+                if (!resp.ok) {
+                    const errData = await resp.json().catch(() => ({}));
+                    throw new Error(errData.detail || ("Server error: " + resp.status));
+                }
+                const data = await resp.json();
+                // backend balas "positif"/"negatif"
+                hasilPrediksi = data.status;
+            } catch (e) {
+                adaError = e.message;
+            } finally {
+                cobaPindahKeHasil();
+            }
+        }
+
+        // Pindah ke hasil hanya jika animasi selesai DAN respons backend sudah ada
+        function cobaPindahKeHasil() {
+            if (adaError) {
+                alert("Gagal melakukan analisis: " + adaError);
+                window.location.href = "rekam.html";
+                return;
+            }
+            if (animasiSelesai && hasilPrediksi) {
+                setTimeout(() => {
+                    window.location.href = `hasil.html?status=${hasilPrediksi}`;
+                }, 800);
+            }
+        }
+
+        // Mulai panggil backend segera (paralel dengan animasi)
+        panggilBackend();
+
+        // Fungsi pembantu mengubah status langkah checklist menjadi Aktif/Sedang Berjalan
+        function setStepActive(element, subText) {
+            element.classList.remove("opacity-40");
+            const icon = element.querySelector(".status-icon");
+            icon.className = "status-icon material-symbols-outlined text-primary animate-spin mt-0.5";
+            icon.textContent = "autorenew";
+            element.querySelector(".status-sub").textContent = subText;
+        }
+
+        // Fungsi pembantu mengubah status langkah checklist menjadi Berhasil/Centang Hijau
+        function setStepComplete(element, subText) {
+            const icon = element.querySelector(".status-icon");
+            icon.className = "status-icon material-symbols-outlined fill-icon text-primary mt-0.5";
+            icon.textContent = "check_circle";
+            element.querySelector(".status-sub").textContent = subText;
+        }
+    });
+</script>
+</body>
+</html>

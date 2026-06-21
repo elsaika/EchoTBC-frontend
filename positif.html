@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hasil Skrining (Berisiko)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#4a9ee5",
+                    "on-error": "#ffffff",
+                    "outline-variant": "#c0c7d2",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#0b1c30",
+                    "surface-bright": "#f8f9ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "tertiary-fixed-dim": "#4fdbc8",
+                    "primary-fixed": "#cfe5ff",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-tertiary-fixed-variant": "#005048",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#004a78",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-fixed": "#dae2fd",
+                    "error": "#ba1a1a",
+                    "surface-variant": "#d3e4fe",
+                    "inverse-primary": "#99cbff",
+                    "background": "#f8f9ff",
+                    "error-container": "#ffdad6",
+                    "surface": "#f8f9ff",
+                    "on-primary": "#ffffff",
+                    "secondary-container": "#dae2fd",
+                    "on-secondary-container": "#5c647a",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface-variant": "#404750",
+                    "secondary": "#565e74",
+                    "tertiary-fixed": "#71f8e4",
+                    "on-background": "#0b1c30",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-fixed": "#131b2e",
+                    "tertiary": "#006b5f",
+                    "on-tertiary-container": "#003731",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#00629d",
+                    "inverse-surface": "#213145",
+                    "on-tertiary-fixed": "#00201c",
+                    "outline": "#707882",
+                    "primary": "#00629d",
+                    "surface-container-high": "#dce9ff",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "primary-fixed-dim": "#99cbff",
+                    "on-primary-container": "#003355",
+                    "on-primary-fixed": "#001d33",
+                    "tertiary-container": "#00ab9a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "base": "8px",
+                    "sm": "12px",
+                    "xl": "40px",
+                    "gutter": "24px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-md": ["Manrope"],
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "label-md": ["JetBrains Mono"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(74, 158, 229, 0.2);
+            box-shadow: 0 4px 20px -2px rgba(0, 98, 157, 0.08);
+        }
+        .error-glow {
+            box-shadow: 0 0 25px rgba(186, 26, 26, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .blue-glow {
+            box-shadow: 0 0 20px rgba(0, 98, 157, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-surface-container-low to-surface text-on-surface font-body-md min-h-screen flex flex-col antialiased">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm transition-all duration-300">
+<div class="flex justify-between items-center px-gutter py-4 max-w-screen-md mx-auto">
+<div class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">coronavirus</span>
+<span class="font-bold tracking-tight">EchoTBC</span>
+</div>
+<div class="flex gap-4">
+<button aria-label="Account" class="text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[88px] pb-[100px] px-md md:px-lg max-w-screen-md mx-auto w-full">
+<!-- Step Indicator -->
+<div aria-label="Progress skrining" class="mb-xl">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant/80">Langkah 5 dari 5</span>
+<span class="font-label-md text-label-md text-primary font-semibold">Selesai</span>
+</div>
+<div class="flex gap-2 h-2">
+<div class="flex-1 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<div class="flex-1 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<div class="flex-1 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<div class="flex-1 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+<div class="flex-1 bg-primary/20 rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Content Area -->
+<div class="flex flex-col gap-xl animate-fade-in-up">
+<!-- Triage Status Card -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-error error-glow relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-[0.03]">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Hasil Skrining</h1>
+</div>
+<div class="bg-error-container/20 rounded-lg p-4 mb-4 border border-error/15">
+<p class="font-headline-md text-headline-md text-error text-center font-bold tracking-wide">
+                            TERINDIKASI BERISIKO TB
+                        </p>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center mb-6">
+                        Berdasarkan jawaban Anda, terdapat gejala yang mengarah pada risiko Tuberkulosis.
+                    </p>
+<!-- Disclaimer Banner -->
+<div class="bg-error-container/40 rounded-lg p-3 flex items-start gap-3 border border-error/10">
+<span class="material-symbols-outlined text-on-error-container mt-0.5" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="font-label-md text-label-md text-on-error-container">
+<strong>Perhatian:</strong> Hasil ini bukan diagnosis medis. Hanya tenaga medis profesional yang dapat memberikan diagnosis pasti melalui tes laboratorium klinis.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Risk Level Bar -->
+<div class="glass-card rounded-xl p-6 blue-glow">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4">Tingkat Risiko</h2>
+<div class="relative pt-1">
+<div class="flex mb-2 items-center justify-between">
+<div>
+<span class="text-xs font-bold inline-block py-1 px-2 uppercase rounded-full text-error bg-error/10 border border-error/10">
+                                Risiko Sedang
+                            </span>
+</div>
+<div class="text-right">
+<span class="text-xs font-bold inline-block text-error">
+                                60%
+                            </span>
+</div>
+</div>
+<div class="overflow-hidden h-2.5 mb-4 text-xs flex rounded-full bg-surface-container border border-outline-variant/10">
+<div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-error transition-all duration-1000" style="width: 60%"></div>
+</div>
+<div class="flex justify-between text-[11px] font-medium text-on-surface-variant/70">
+<span>RENDAH</span>
+<span>SEDANG</span>
+<span>TINGGI</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Supporting Info Card -->
+<div class="glass-card rounded-xl p-6 flex flex-col justify-between blue-glow">
+<div>
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">monitor_weight</span>
+                            Data Pendukung
+                        </h2>
+<div class="flex items-end gap-3 mb-2">
+<span class="font-display-lg text-display-lg text-primary">22.5</span>
+<span class="font-body-md text-body-md text-on-surface-variant mb-2">BMI</span>
+</div>
+<p class="font-label-md text-label-md text-primary font-medium">Indeks Massa Tubuh Normal</p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-on-surface-variant/80 italic">
+                            Penurunan berat badan drastis adalah salah satu gejala utama TB. Terus pantau berat badan Anda.
+                        </p>
+</div>
+</div>
+<!-- Next Steps Card -->
+<div class="glass-card rounded-xl p-6 border-primary/10 blue-glow">
+<h2 class="font-label-md text-label-md text-primary uppercase tracking-wider mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">vital_signs</span>
+                        Langkah Selanjutnya
+                    </h2>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5 border border-primary/5">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">local_hospital</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Segera kunjungi puskesmas</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant/80">Konsultasikan hasil ini dengan dokter terdekat.</p>
+</div>
+</li>
+<li class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shrink-0 mt-0.5 border border-outline-variant/10">
+<span class="material-symbols-outlined text-on-surface-variant text-sm" style="font-variation-settings: 'FILL' 1;">science</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-semibold">Lakukan Tes Dahak</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant/80">Tes TCM untuk diagnosis pasti.</p>
+</div>
+</li>
+</ul>
+<div class="mt-6 pt-4 border-t border-outline-variant/20">
+<a class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg bg-primary/5 hover:bg-primary/10 transition-colors text-primary font-label-md text-label-md border border-primary/20" href="tel:119">
+<span class="material-symbols-outlined">call</span>
+                            Hubungi Hotline TBC (119)
+                        </a>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mt-4">
+<button class="w-full h-[56px] rounded-xl bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.98] transition-all shadow-md shadow-primary/20">
+<span class="material-symbols-outlined">refresh</span>
+                    Ulangi Skrining
+                </button>
+<button class="w-full h-[56px] rounded-xl border border-outline-variant bg-white/50 text-on-surface-variant font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-white hover:text-error hover:border-error/30 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">delete</span>
+                    Hapus Data
+                </button>
+</div>
+</div>
+</main>
+<style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</body></html>

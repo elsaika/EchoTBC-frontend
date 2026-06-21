@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EchoTBC - Rekam Batuk</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+          tailwind.config = {
+            darkMode: "class",
+            theme: {
+              extend: {
+                "colors": {
+                        "primary-container": "#4a9ee5",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c0c7d2",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "tertiary-fixed-dim": "#4fdbc8",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-tertiary-fixed-variant": "#005048",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#004a78",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary-fixed": "#dae2fd",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#d3e4fe",
+                        "inverse-primary": "#99cbff",
+                        "background": "#f8f9ff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dae2fd",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-surface-variant": "#404750",
+                        "secondary": "#565e74",
+                        "tertiary-fixed": "#71f8e4",
+                        "on-background": "#0b1c30",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-fixed": "#131b2e",
+                        "tertiary": "#006b5f",
+                        "on-tertiary-container": "#003731",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#00629d",
+                        "inverse-surface": "#213145",
+                        "on-tertiary-fixed": "#00201c",
+                        "outline": "#707882",
+                        "primary": "#00629d",
+                        "surface-container-high": "#dce9ff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "primary-fixed-dim": "#99cbff",
+                        "on-primary-container": "#003355",
+                        "on-primary-fixed": "#001d33",
+                        "tertiary-container": "#00ab9a"
+                },
+                "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                },
+                "spacing": {
+                        "container-max": "1280px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "xl": "40px",
+                        "gutter": "24px",
+                        "xs": "4px"
+                },
+                "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Manrope"],
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                },
+                "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                }
+              },
+            },
+          }
+        </script>
+    <style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 98, 157, 0.15);
+            box-shadow: 0 4px 20px -2px rgba(0, 98, 157, 0.08);
+        }
+        
+        .sophisticated-gradient {
+            background: linear-gradient(to bottom, #eff4ff 0%, #f8f9ff 100%);
+            background-attachment: fixed;
+        }
+
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #dae2fd 0%, #eff4ff 100%);
+        }
+        
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 158, 229, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(74, 158, 229, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 158, 229, 0); }
+        }
+        
+        .recording-pulse {
+            animation: pulse-ring 2s infinite;
+        }
+
+        .waveform-bar {
+            height: 8px;
+            transition: height 0.2s ease;
+        }
+        .playing .waveform-bar {
+            animation: wave 1.2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 8px; }
+            50% { height: 32px; }
+        }
+
+        .card-glow {
+            box-shadow: 0 0 20px rgba(74, 158, 229, 0.05);
+        }
+    </style>
+</head>
+<body class="sophisticated-gradient text-on-background min-h-screen font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+
+    <header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-primary/10 shadow-sm lg:hidden">
+        <div class="flex justify-center items-center px-gutter py-4 max-w-screen-md mx-auto">
+            <div class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary flex items-center gap-2">
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">health_and_safety</span>
+                EchoTBC
+            </div>
+        </div>
+    </header>
+
+    <div id="tb-stepper" data-step="3"></div>
+<script src="stepper.js"></script>
+
+    <main class="pt-[80px] lg:pt-0 pb-[40px] lg:pl-64 flex flex-col min-h-screen">
+        <div class="w-full bg-[#006b5f] text-white py-3 px-4 text-center font-label-md text-label-md z-30 shadow-sm sticky top-[80px] lg:top-0">
+            Peringatan: Ini bukan diagnosis medis. Hasil skrining memerlukan konfirmasi dokter.
+        </div>
+        
+        <div class="w-full max-w-[640px] mx-auto px-md md:px-lg mt-6 flex flex-col flex-1">
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="font-label-md text-label-md text-primary/80 font-bold">Langkah 3 dari 5</span>
+                    <span class="font-label-sm text-label-sm text-primary bg-primary/10 px-3 py-1 rounded-full">Rekam Batuk</span>
+                </div>
+                <div class="flex gap-2 h-1.5">
+                    <div class="flex-1 bg-primary rounded-full"></div>
+                    <div class="flex-1 bg-primary rounded-full"></div>
+                    <div class="flex-1 bg-primary rounded-full relative overflow-hidden">
+                        <div class="absolute inset-0 bg-primary/30 recording-pulse"></div>
+                    </div>
+                    <div class="flex-1 bg-surface-variant rounded-full"></div>
+                    <div class="flex-1 bg-surface-variant rounded-full"></div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h1 class="font-headline-lg-mobile md:text-headline-lg text-primary mb-2 font-bold">Rekam Batuk</h1>
+            </div>
+
+            <div class="glass-panel card-glow rounded-2xl p-6 mb-6">
+                <h3 class="font-headline-md text-headline-md text-primary border-b border-primary/5 pb-2 mb-4 font-bold">Instruksi Perekaman</h3>
+                <ul class="flex flex-col gap-4 text-on-surface-variant leading-relaxed">
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary mt-0.5" data-icon="volume_off">volume_off</span>
+                        <span>Pindah ke ruangan yang tenang dan minim kebisingan.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary mt-0.5" data-icon="settings_cell">settings_cell</span>
+                        <span>Pegang perangkat sekitar 20-30 cm dari mulut Anda.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary mt-0.5" data-icon="record_voice_over">record_voice_over</span>
+                        <span>Tekan tombol rekam, tarik napas dalam, dan <strong class="text-on-surface">batuk sebanyak 3 kali</strong> dengan jelas.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex-1 flex flex-col items-center justify-center min-h-[320px] bg-white/90 backdrop-blur-sm rounded-2xl border border-primary/15 card-glow p-6 relative overflow-hidden mb-8">
+                <div class="flex flex-col items-center w-full transition-opacity duration-300" id="recording-state">
+                    <div class="text-center mb-8">
+                        <p class="font-label-md text-label-md text-primary tracking-widest uppercase font-bold" id="recording-status">Siap Merekam</p>
+                        <p class="font-headline-lg-mobile md:text-headline-lg text-on-surface mt-2 opacity-0 transition-opacity font-bold" id="recording-timer">00:00</p>
+                    </div>
+                    <button type="button" aria-label="Mulai Merekam" class="w-24 h-24 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-lg hover:brightness-105 transition-all active:scale-95 group relative z-10" id="btn-record">
+                        <span class="material-symbols-outlined text-5xl transition-transform group-hover:scale-110" data-icon="mic" style="font-variation-settings: 'FILL' 1;">mic</span>
+                        <div class="absolute inset-0 rounded-full border-2 border-primary-container opacity-0" id="record-ring"></div>
+                    </button>
+                    <p class="font-body-md text-body-md text-on-surface-variant mt-6 text-center max-w-[250px]">
+                        Tekan ikon mikrofon untuk memulai
+                    </p>
+                </div>
+
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 opacity-0 pointer-events-none transition-opacity duration-300 z-20 p-6" id="playback-state">
+                    <div class="text-center mb-6 w-full">
+                        <p class="font-label-md text-label-md text-primary tracking-widest uppercase mb-4 font-bold">Rekaman Selesai</p>
+                        
+                        <div class="flex items-center justify-center gap-1 h-12 w-full max-w-[200px] mx-auto mb-6" id="visualizer-container">
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.1s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.3s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.0s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.4s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.2s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.5s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.1s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.6s"></div>
+                            <div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.2s"></div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between w-full max-w-[280px] mx-auto">
+                            <span class="font-label-sm text-label-sm text-on-surface-variant" id="playback-current-time">00:00</span>
+                            <div class="flex-1 mx-3 h-1 bg-outline-variant/30 rounded-full overflow-hidden">
+                                <div class="h-full bg-primary rounded-full transition-all duration-200" id="playback-progress" style="width: 0%"></div>
+                            </div>
+                            <span class="font-label-sm text-label-sm text-on-surface-variant" id="playback-duration">00:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4">
+                        <button type="button" id="btn-play-playback" class="w-14 h-14 rounded-full border-2 border-primary text-primary flex items-center justify-center hover:bg-primary/10 transition-colors active:scale-95 shadow-sm">
+                            <span class="material-symbols-outlined text-3xl font-bold" id="play-icon">play_arrow</span>
+                        </button>
+                    </div>
+                    <button type="button" class="mt-6 px-6 py-2 rounded-full border border-primary text-primary font-label-md text-label-md hover:bg-primary/5 transition-colors active:scale-95 flex items-center gap-2" id="btn-rerecord">
+                        <span class="material-symbols-outlined text-xl" data-icon="replay">replay</span>
+                        Rekam Ulang
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center w-full mt-4">
+                <button
+                  type="button"
+                  id="btn-kembali"
+                  class="h-[56px] px-8 rounded-xl border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-all active:scale-95 flex items-center justify-center gap-2"
+                >
+                  <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                  Kembali
+                </button>
+                <button
+                  type="button"
+                  id="btn-lanjut"
+                  class="h-[56px] px-12 rounded-xl bg-primary text-on-primary font-bold hover:brightness-110 transition-all active:scale-95 shadow-xl shadow-primary/25 flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                  disabled
+                >
+                  Lanjut
+                  <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const btnRecord = document.getElementById('btn-record');
+        const recordRing = document.getElementById('record-ring');
+        const recordingStatus = document.getElementById('recording-status');
+        const recordingTimer = document.getElementById('recording-timer');
+        const iconMic = btnRecord.querySelector('.material-symbols-outlined');
+        
+        const stateRecording = document.getElementById('recording-state');
+        const statePlayback = document.getElementById('playback-state');
+        const btnRerecord = document.getElementById('btn-rerecord');
+        
+        const btnKembali = document.getElementById('btn-kembali');
+        const btnLanjut = document.getElementById('btn-lanjut');
+
+        // Elemen playback simulasi audio
+        const btnPlayPlayback = document.getElementById('btn-play-playback');
+        const playIcon = document.getElementById('play-icon');
+        const visualizerContainer = document.getElementById('visualizer-container');
+        const playbackCurrentTime = document.getElementById('playback-current-time');
+        const playbackProgress = document.getElementById('playback-progress');
+        const playbackDuration = document.getElementById('playback-duration');
+
+        let isRecording = false;
+        let timerInterval;
+        let seconds = 0;
+        let userDuration = 0; // Durasi asli rekaman pengguna
+
+        let isPlaying = false;
+        let playbackInterval;
+        let playbackSeconds = 0;
+
+        // --- Variabel perekaman audio NYATA ---
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let recordedBlob = null;
+        let audioStream = null;
+        let audioPlayer = null;   // elemen Audio nyata untuk playback
+
+        // Aksi Navigasi
+        btnKembali.addEventListener('click', () => {
+            window.location.href = 'klinis.html';
+        });
+
+        btnLanjut.addEventListener('click', () => {
+            if (!btnLanjut.hasAttribute('disabled')) {
+                if (!recordedBlob) {
+                    alert('Rekaman audio belum tersedia. Silakan rekam dulu.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    localStorage.setItem('tb_audio_base64', reader.result);
+                    window.location.href = 'proses.html';
+                };
+                reader.readAsDataURL(recordedBlob);
+            }
+        });
+
+        // Kontrol Proses Rekaman Berjalan
+        btnRecord.addEventListener('click', async () => {
+            if (!isRecording) {
+                // --- Mulai perekaman audio NYATA dari mikrofon ---
+                try {
+                    audioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                } catch (err) {
+                    alert('Tidak bisa mengakses mikrofon. Pastikan izin mikrofon diberikan.');
+                    return;
+                }
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(audioStream);
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
+                mediaRecorder.onstop = () => {
+                    recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    if (audioStream) audioStream.getTracks().forEach(t => t.stop());
+                    // Siapkan audio nyata untuk playback
+                    const url = URL.createObjectURL(recordedBlob);
+                    audioPlayer = new Audio(url);
+                    // Saat audio selesai diputar, reset tampilan playback
+                    audioPlayer.addEventListener('ended', () => resetPlaybackAudio());
+                };
+                mediaRecorder.start();
+
+                isRecording = true;
+                btnRecord.classList.add('bg-error', 'text-on-error');
+                btnRecord.classList.remove('bg-primary-container', 'text-on-primary-container');
+                recordRing.classList.add('recording-pulse');
+                iconMic.textContent = 'stop';
+                
+                recordingStatus.textContent = 'Merekam...';
+                recordingStatus.classList.add('text-error');
+                recordingTimer.classList.remove('opacity-0');
+                
+                seconds = 0;
+                recordingTimer.textContent = '00:00';
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+                    const s = (seconds % 60).toString().padStart(2, '0');
+                    recordingTimer.textContent = `${m}:${s}`;
+                    
+                    // Batas pengaman rekaman otomatis mandiri (misal 30 detik jika lupa dimatikan)
+                    if (seconds >= 30) {
+                        stopRecording();
+                    }
+                }, 1000);
+            } else {
+                stopRecording();
+            }
+        });
+
+        function stopRecording() {
+            clearInterval(timerInterval);
+            isRecording = false;
+
+            // --- Hentikan perekaman audio NYATA ---
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            
+            // Catat durasi riil milik pengguna
+            userDuration = seconds; 
+            
+            // Update teks batas durasi visualizer player secara dinamis
+            const displaySec = userDuration.toString().padStart(2, '0');
+            playbackDuration.textContent = `00:${displaySec}`;
+
+            stateRecording.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                statePlayback.classList.remove('opacity-0', 'pointer-events-none');
+                
+                // Aktifkan tombol Lanjut utama
+                btnLanjut.removeAttribute('disabled');
+                btnLanjut.classList.remove('opacity-50', 'cursor-not-allowed');
+            }, 300);
+        }
+
+        // Logika Replay Suara Menyesuaikan Durasi Penguji
+        btnPlayPlayback.addEventListener('click', () => {
+            if (!isPlaying) {
+                isPlaying = true;
+                playIcon.textContent = 'pause';
+                visualizerContainer.classList.add('playing');
+
+                // --- Putar audio NYATA yang direkam ---
+                if (audioPlayer) {
+                    audioPlayer.play().catch(err => {
+                        alert('Gagal memutar audio: ' + err.message);
+                    });
+                }
+
+                playbackInterval = setInterval(() => {
+                    playbackSeconds += 0.2; // Pembaruan tiap 200ms
+                    
+                    if (playbackSeconds >= userDuration) {
+                        resetPlaybackAudio();
+                    } else {
+                        const roundedSec = Math.floor(playbackSeconds);
+                        playbackCurrentTime.textContent = `00:${roundedSec.toString().padStart(2, '0')}`;
+                        
+                        // Menghitung progress bar proporsional terhadap waktu rekam pengguna
+                        const pct = (playbackSeconds / userDuration) * 100;
+                        playbackProgress.style.width = `${pct}%`;
+                    }
+                }, 200);
+            } else {
+                pausePlaybackAudio();
+            }
+        });
+
+        function pausePlaybackAudio() {
+            isPlaying = false;
+            playIcon.textContent = 'play_arrow';
+            visualizerContainer.classList.remove('playing');
+            clearInterval(playbackInterval);
+            // --- Jeda audio NYATA ---
+            if (audioPlayer) audioPlayer.pause();
+        }
+
+        function resetPlaybackAudio() {
+            isPlaying = false;
+            playbackSeconds = 0;
+            playIcon.textContent = 'play_arrow';
+            visualizerContainer.classList.remove('playing');
+            clearInterval(playbackInterval);
+            playbackCurrentTime.textContent = '00:00';
+            playbackProgress.style.width = '0%';
+            // --- Hentikan & kembalikan audio NYATA ke awal ---
+            if (audioPlayer) {
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+            }
+        }
+
+        // Tombol Reset Rekam Ulang
+        btnRerecord.addEventListener('click', () => {
+            resetPlaybackAudio();
+            // Bersihkan audio & blob lama agar tidak tumpang tindih
+            if (audioPlayer) { audioPlayer.pause(); audioPlayer = null; }
+            recordedBlob = null;
+            userDuration = 0; // Bersihkan data durasi sebelumnya
+            statePlayback.classList.add('opacity-0', 'pointer-events-none');
+            
+            btnRecord.classList.remove('bg-error', 'text-on-error');
+            btnRecord.classList.add('bg-primary-container', 'text-on-primary-container');
+            recordRing.classList.remove('recording-pulse');
+            iconMic.textContent = 'mic';
+            
+            recordingStatus.textContent = 'Siap Merekam';
+            recordingStatus.classList.remove('text-error');
+            recordingTimer.classList.add('opacity-0');
+            
+            // Kunci kembali tombol lanjut utama
+            btnLanjut.setAttribute('disabled', 'true');
+            btnLanjut.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            setTimeout(() => {
+                stateRecording.classList.remove('opacity-0', 'pointer-events-none');
+            }, 300);
+        });
+    </script>
+</body>
+</html>

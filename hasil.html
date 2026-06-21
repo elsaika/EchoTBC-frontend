@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>EchoTBC - Hasil Screening</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+          tailwind.config = {
+            theme: {
+              extend: {
+                "colors": {
+                        "primary": "#00629d",
+                        "primary-container": "#cfe5ff",
+                        "on-surface": "#0b1c30",
+                        "on-surface-variant": "#404750",
+                        "background": "#f8f9ff",
+                        "surface-variant": "#d3e4fe",
+                },
+                "fontFamily": {
+                        "headline-md": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"]
+                }
+              }
+            }
+          }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill-icon { font-variation-settings: 'FILL' 1; }
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 98, 157, 0.1);
+            box-shadow: 0 8px 32px -4px rgba(0, 98, 157, 0.08);
+        }
+        .ambient-bg { background: linear-gradient(to bottom, #eff4ff 0%, #f8f9ff 100%); }
+        .sidebar-gradient { background: linear-gradient(180deg, #dae2fd 0%, #eff4ff 100%); }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex font-body-md antialiased overflow-x-hidden">
+
+    <div id="tb-stepper" data-step="5"></div>
+<script src="stepper.js"></script>
+
+    <div class="flex-1 flex flex-col relative w-full lg:ml-64 ambient-bg min-h-screen">
+        <header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-xl shadow-sm border-b border-primary/10 lg:hidden">
+            <div class="flex justify-center items-center px-6 py-4 max-w-screen-md mx-auto">
+                <div class="font-headline-md text-2xl font-bold text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined text-3xl">health_and_safety</span>EchoTBC
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 mt-24 lg:mt-8 mb-8 px-4 flex flex-col items-center justify-center w-full max-w-[640px] mx-auto relative z-10">
+            
+            <div class="w-full flex items-center justify-between mb-6 gap-2">
+                <div class="h-1.5 flex-1 rounded-full bg-primary"></div>
+                <div class="h-1.5 flex-1 rounded-full bg-primary"></div>
+                <div class="h-1.5 flex-1 rounded-full bg-primary"></div>
+                <div class="h-1.5 flex-1 rounded-full bg-primary"></div>
+                <div id="step-5" class="h-1.5 flex-1 rounded-full bg-primary"></div>
+            </div>
+            <p class="text-sm text-primary mb-6 uppercase tracking-widest font-bold">Langkah 5 dari 5: Hasil</p>
+
+            <div class="glass-card w-full rounded-2xl p-8 md:p-12 flex flex-col items-center relative overflow-hidden">
+                
+                <div id="result-badge" class="w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-md border">
+                    <span id="result-icon" class="material-symbols-outlined text-4xl fill-icon">info</span>
+                </div>
+
+                <h2 class="text-sm uppercase tracking-wider text-on-surface-variant font-semibold mb-1">Hasil Analisis AI</h2>
+                <h1 id="result-status" class="font-headline-md text-2xl md:text-3xl font-bold mb-4 text-center">Mengecek Hasil...</h1>
+                <p id="result-desc" class="text-base text-on-surface-variant text-center mb-8 max-w-[400px]">Sedang memuat data analisis Anda...</p>
+
+                <div class="w-full flex flex-col sm:flex-row gap-3">
+                    <button onclick="window.location.href='klinis.html'" class="flex-1 py-3 px-4 rounded-xl border border-primary text-primary font-semibold hover:bg-primary/5 transition-colors text-center">
+                        Screening Ulang
+                    </button>
+                    <a id="action-btn" href="#" class="flex-1 py-3 px-4 rounded-xl text-white font-semibold shadow-md text-center transition-transform active:scale-95">
+                        Tindakan Lanjut
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-6 w-full bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 shadow-sm">
+                <span class="material-symbols-outlined text-amber-600 fill-icon mt-0.5 flex-shrink-0">info</span>
+                <div>
+                    <p class="text-sm text-amber-800 font-bold mb-1">Disclaimer Medis</p>
+                    <p class="text-sm text-amber-950 leading-relaxed">
+                        Aplikasi ini merupakan alat skrining awal berbasis kecerdasan buatan dan bukan diagnosis klinis resmi. Harap konsultasikan hasil ini dengan dokter atau fasilitas kesehatan terdekat.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Ambil status dari URL parameter (?status=...)
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+
+            // 2. Tangkap elemen-elemen HTML yang ingin diubah rupa warnanya
+            const badge = document.getElementById("result-badge");
+            const icon = document.getElementById("result-icon");
+            const statusText = document.getElementById("result-status");
+            const descText = document.getElementById("result-desc");
+            const actionBtn = document.getElementById("action-btn");
+            const step5 = document.getElementById("step-5");
+
+            // 3. Kondisi jika status adalah POSITIF / BERISIKO TINGGI
+            if (status === "positif") {
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-md border border-red-200 bg-red-50 text-red-600";
+                icon.textContent = "warning";
+                statusText.textContent = "Terindikasi Berisiko";
+                statusText.className = "font-headline-md text-2xl md:text-3xl font-bold mb-4 text-center text-red-600";
+                descText.textContent = "Analisis suara batuk dan data klinis Anda menunjukkan kesamaan pola dengan indikasi Tuberkulosis (TB). Jangan panik, direkomendasikan pemeriksaan lanjutan.";
+                
+                // Set tombol tindakan mengarah ke faskes/maps terdekat
+                actionBtn.textContent = "Cari Faskes Terdekat";
+                actionBtn.href = "https://www.google.com/maps/search/puskesmas+atau+rumah+sakit+terdekat";
+                actionBtn.className = "flex-1 py-3 px-4 rounded-xl bg-red-600 text-white font-semibold shadow-md text-center transition-colors hover:bg-red-700 active:scale-95";
+                
+                step5.className = "h-1.5 flex-1 rounded-full bg-red-600";
+            } 
+            // 4. Kondisi jika status adalah NEGATIF / BERISIKO RENDAH
+            else {
+                badge.className = "w-20 h-20 rounded-full flex items-center justify-center mb-6 shadow-md border border-emerald-200 bg-emerald-50 text-emerald-600";
+                icon.textContent = "check_circle";
+                statusText.textContent = "Berisiko Rendah / Negatif";
+                statusText.className = "font-headline-md text-2xl md:text-3xl font-bold mb-4 text-center text-emerald-600";
+                descText.textContent = "Bagus! Algoritma tidak mendeteksi karakteristik batuk yang mengarah pada gejala Tuberkulosis. Tetap jaga kesehatan lingkungan dan ventilasi udara Anda.";
+                
+                // Set tombol tindakan mengarah ke tips kesehatan
+                actionBtn.textContent = "Tips Jaga Kesehatan";
+                actionBtn.href = "https://www.kemkes.go.id";
+                actionBtn.className = "flex-1 py-3 px-4 rounded-xl bg-emerald-600 text-white font-semibold shadow-md text-center transition-colors hover:bg-emerald-700 active:scale-95";
+                
+                step5.className = "h-1.5 flex-1 rounded-full bg-emerald-600";
+            }
+        });
+    </script>
+</body>
+</html>
