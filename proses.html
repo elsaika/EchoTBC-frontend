@@ -255,123 +255,69 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
         const progressFill = document.getElementById("progress-fill");
         const progressText = document.getElementById("progress-percentage");
         const stepBar = document.getElementById("step-bar");
         const mainTitle = document.getElementById("main-title");
-
         const statusAudio = document.getElementById("status-audio");
         const statusFeature = document.getElementById("status-feature");
         const statusAnalysis = document.getElementById("status-analysis");
 
-        let progress = 0;
-
-        const interval = setInterval(() => {
-            progress += 4; // Menaikkan progres konstan berjangka waktu
-            if (progress > 100) progress = 100;
-
-            // Perbarui elemen visual bar & teks persentase
-            progressFill.style.width = `${progress}%`;
-            progressText.textContent = `${progress}%`;
-            stepBar.style.width = `${progress}%`;
-
-            // Alur Perubahan Fase Item Checklist
-            if (progress >= 35 && progress < 70) {
-                // Langkah 1 Berhasil -> Langkah 2 Aktif
-                setStepComplete(statusAudio, "Rekaman divalidasi");
-                setStepActive(statusFeature, "Mengisolasi pola pernapasan...");
-                mainTitle.textContent = "Mengekstrak fitur batuk...";
-            } 
-            else if (progress >= 70 && progress < 100) {
-                // Langkah 2 Berhasil -> Langkah 3 Aktif
-                setStepComplete(statusFeature, "Pola pernapasan diisolasi");
-                setStepActive(statusAnalysis, "Sedang mengevaluasi risiko medis...");
-                mainTitle.textContent = "Menjalankan analisis AI...";
-            } 
-            else if (progress >= 100) {
-                // Semua Tahapan Checklist Beres
-                clearInterval(interval);
-                setStepComplete(statusAnalysis, "Analisis risiko selesai");
-                mainTitle.textContent = "Analisis Berhasil!";
-                animasiSelesai = true;
-                cobaPindahKeHasil();
-            }
-        }, 150); // Total durasi loading berjalan sekitar 3.5 - 4 detik
-        
-        // MENGGUNAKAN VARIABEL GLOBAL DARI STEPPER.JS:
-        const BACKEND_URL = window.API_BASE_URL + "/api/v1/screening";
-        let animasiSelesai = false;
-        let hasilPrediksi = null;
-        let adaError = null;
-
-        // Ubah string base64 (data URL) menjadi Blob audio
-        function base64KeBlob(dataURL) {
-            const [meta, b64] = dataURL.split(",");
-            const mime = meta.match(/:(.*?);/)[1];
-            const biner = atob(b64);
-            const arr = new Uint8Array(biner.length);
-            for (let i = 0; i < biner.length; i++) arr[i] = biner.charCodeAt(i);
-            return new Blob([arr], { type: mime });
+        // Fungsi untuk memperbarui progres secara manual
+        function updateProgress(percent, title) {
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `${percent}%`;
+            stepBar.style.width = `${percent}%`;
+            mainTitle.textContent = title;
         }
 
-        async function panggilBackend() {
+        async function jalankanProses() {
             try {
+                // 1. Ambil data lokal
                 const dataKlinis = JSON.parse(localStorage.getItem("tb_data_klinis"));
                 const audioB64 = localStorage.getItem("tb_audio_base64");
-                if (!dataKlinis || !audioB64) {
-                    throw new Error("Data klinis atau audio tidak ditemukan. Ulangi dari awal.");
-                }
+                if (!dataKlinis || !audioB64) throw new Error("Data tidak ditemukan.");
 
-                const audioBlob = base64KeBlob(audioB64);
+                // 2. Tahap 1: Validasi (0% - 30%)
+                updateProgress(30, "Mengekstrak fitur batuk...");
+                setStepComplete(statusAudio, "Rekaman divalidasi");
+                setStepActive(statusFeature, "Mengisolasi pola pernapasan...");
+
+                // 3. Persiapan Form
                 const form = new FormData();
-                // data klinis
-                form.append("age", dataKlinis.age);
-                form.append("BMI", dataKlinis.BMI);
-                form.append("reported_cough_dur", dataKlinis.reported_cough_dur);
-                form.append("sex", dataKlinis.sex);
-                form.append("weight_loss", dataKlinis.weight_loss);
-                form.append("smoke_lweek", dataKlinis.smoke_lweek);
-                form.append("fever", dataKlinis.fever);
-                form.append("night_sweats", dataKlinis.night_sweats);
-                // backend minta 3 audio -> kirim rekaman yang sama 3x
+                Object.keys(dataKlinis).forEach(k => form.append(k, dataKlinis[k]));
+                const audioBlob = await (await fetch(audioB64)).blob();
                 form.append("audio_1", audioBlob, "batuk.webm");
                 form.append("audio_2", audioBlob, "batuk.webm");
                 form.append("audio_3", audioBlob, "batuk.webm");
 
-                const resp = await fetch(BACKEND_URL, { method: "POST", body: form });
-                if (!resp.ok) {
-                    const errData = await resp.json().catch(() => ({}));
-                    throw new Error(errData.detail || ("Server error: " + resp.status));
-                }
+                // 4. Tahap 2: Kirim ke Backend (30% - 80%)
+                updateProgress(60, "Menjalankan analisis AI...");
+                const resp = await fetch(window.API_BASE_URL + "/api/v1/screening", { method: "POST", body: form });
                 const data = await resp.json();
-                // backend balas "positif"/"negatif"
-                hasilPrediksi = data.status;
-            } catch (e) {
-                adaError = e.message;
-            } finally {
-                cobaPindahKeHasil();
-            }
-        }
+                
+                if (!resp.ok) throw new Error(data.detail || "Server Error");
 
-        // Pindah ke hasil hanya jika animasi selesai DAN respons backend sudah ada
-        function cobaPindahKeHasil() {
-            if (adaError) {
-                alert("Gagal melakukan analisis: " + adaError);
-                window.location.href = "rekam.html";
-                return;
-            }
-            if (animasiSelesai && hasilPrediksi) {
+                // 5. Tahap 3: Selesai (80% - 100%)
+                setStepComplete(statusFeature, "Pola pernapasan diisolasi");
+                setStepComplete(statusAnalysis, "Analisis risiko selesai");
+                updateProgress(100, "Analisis Berhasil!");
+
+                // Pindah halaman
                 setTimeout(() => {
-                    window.location.href = `hasil.html?status=${hasilPrediksi}`;
-                }, 800);
+                    window.location.href = `hasil.html?status=${data.status}`;
+                }, 500);
+
+            } catch (e) {
+                alert("Gagal melakukan analisis: " + e.message);
+                window.location.href = "rekam.html";
             }
         }
 
-        // Mulai panggil backend segera (paralel dengan animasi)
-        panggilBackend();
+        // Jalankan fungsi
+        jalankanProses();
 
-        // Fungsi pembantu mengubah status langkah checklist menjadi Aktif/Sedang Berjalan
         function setStepActive(element, subText) {
             element.classList.remove("opacity-40");
             const icon = element.querySelector(".status-icon");
@@ -380,12 +326,12 @@
             element.querySelector(".status-sub").textContent = subText;
         }
 
-        // Fungsi pembantu mengubah status langkah checklist menjadi Berhasil/Centang Hijau
         function setStepComplete(element, subText) {
             const icon = element.querySelector(".status-icon");
             icon.className = "status-icon material-symbols-outlined fill-icon text-primary mt-0.5";
             icon.textContent = "check_circle";
             element.querySelector(".status-sub").textContent = subText;
+            element.classList.remove("opacity-40");
         }
     });
 </script>
