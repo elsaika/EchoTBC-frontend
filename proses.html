@@ -298,9 +298,9 @@
                 cobaPindahKeHasil();
             }
         }, 150); // Total durasi loading berjalan sekitar 3.5 - 4 detik
-
-        // ================= PANGGILAN BACKEND NYATA =================
-        const BACKEND_URL = "http://localhost:8000/api/v1/screening";
+        
+        // MENGGUNAKAN VARIABEL GLOBAL DARI STEPPER.JS:
+        const BACKEND_URL = window.API_BASE_URL + "/api/v1/screening";
         let animasiSelesai = false;
         let hasilPrediksi = null;
         let adaError = null;
