@@ -10,7 +10,7 @@
 // 🚀 KONFIGURASI PUSAT API BACKEND (HUGGING FACE)
 // =====================================================================
 // Tempel Direct URL dari Hugging Face kamu di sini (tanpa tanda garis miring '/' di ujungnya)
-window.API_BASE_URL = "https://elsaikar-echotbc.hf.space";
+window.API_BASE_URL = "https://devyana-echotbc-backend.hf.space";
 
 (function () {
   const STEPS = [
